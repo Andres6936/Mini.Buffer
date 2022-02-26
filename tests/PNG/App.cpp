@@ -2,6 +2,7 @@
 
 #include <inttypes.h>
 #include <stdio.h>
+#include <iostream>
 
 int main(int argc, char** argv)
 {
@@ -76,10 +77,12 @@ int main(int argc, char** argv)
 	}
 
 
-	printf("width: %" PRIu32 "\nheight: %" PRIu32 "\n"
-		   "bit depth: %" PRIu8 "\ncolor type: %" PRIu8 " - %s\n",
-			ihdr.width, ihdr.height,
-			ihdr.bit_depth, ihdr.color_type, clr_type_str);
+	std::cout << "width: " << ihdr.width << "\n";
+	std::cout << "height: " << ihdr.height << "\n";
+	std::cout << "bit depth: " << ihdr.bit_depth << "\n";
+	std::cout << "color type: " << ihdr.color_type << " - " << clr_type_str << "\n";
+
+
 	printf("compression method: %" PRIu8 "\nfilter method: %" PRIu8 "\n"
 		   "interlace method: %" PRIu8 "\n",
 			ihdr.compression_method, ihdr.filter_method,
