@@ -358,3 +358,21 @@ IF (MINIFB_BUILD_EXAMPLES)
 ENDIF ()
 
 MESSAGE(STATUS "Done " ${PROJECT_NAME})
+
+
+# Content Pack Manager (Wrapper over FetchContent)
+INCLUDE(CMakeModules/CPM.cmake)
+
+# In this case, the name of the NAME variable is important.
+# because it will be used to determine the path where the
+# source code of the project is located.
+CPMADDPACKAGE(
+        NAME SPNG
+        GITHUB_REPOSITORY Andres6936/SPNG
+        VERSION 2021.2.26
+)
+
+ADD_EXECUTABLE(MiniBuffer.PNG.App tests/PNG/App.cpp)
+TARGET_INCLUDE_DIRECTORIES(MiniBuffer.PNG.App PRIVATE src)
+TARGET_INCLUDE_DIRECTORIES(MiniBuffer.PNG.App PRIVATE src/ios)
+TARGET_LINK_LIBRARIES(MiniBuffer.PNG.App PRIVATE Spng::Framework)
