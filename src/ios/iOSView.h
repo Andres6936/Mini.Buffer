@@ -3,7 +3,8 @@
 
 @interface iOSView : MTKView
 {
-    @public SWindowData *window_data;
+@public
+	SWindowData* window_data;
 }
 
 @end

@@ -6,11 +6,13 @@
 
 @class iOSViewDelegate;
 
-typedef struct Vertex {
-    float x, y, z, w;
+typedef struct Vertex
+{
+	float x, y, z, w;
 } Vertex;
 
-typedef struct {
-    iOSViewDelegate     *view_delegate;
-    Vertex              vertices[4];
+typedef struct
+{
+	iOSViewDelegate* view_delegate;
+	Vertex vertices[4];
 } SWindowData_IOS;

@@ -10,12 +10,12 @@
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 {
-    CADisplayLink   *mDisplayLink;
+	CADisplayLink* mDisplayLink;
 }
 
-@property (strong, nonatomic) UIWindow *window;
+@property(strong, nonatomic) UIWindow* window;
 
-- (void) OnUpdateFrame;
+- (void)OnUpdateFrame;
 
 @end
 

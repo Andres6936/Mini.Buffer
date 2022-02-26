@@ -2,11 +2,12 @@
 
 #include "WindowData.h"
 
-@interface OSXView : NSView<NSTextInputClient>
+@interface OSXView : NSView <NSTextInputClient>
 {
-    @public SWindowData     *window_data;
+@public
+	SWindowData* window_data;
 #if defined(USE_METAL_API)
-    @private NSTrackingArea *tracking_area;
+	@private NSTrackingArea *tracking_area;
 #endif
 }
 

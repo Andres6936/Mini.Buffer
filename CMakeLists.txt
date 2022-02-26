@@ -1,342 +1,342 @@
-cmake_minimum_required(VERSION 3.7)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.7)
 
-set(PROJECT_NAME MiniFB)
-project(${PROJECT_NAME})
+SET(PROJECT_NAME MiniFB)
+PROJECT(${PROJECT_NAME})
 
-message("Processing " ${PROJECT_NAME})
+MESSAGE("Processing " ${PROJECT_NAME})
 
 # Detect iOS
 #--------------------------------------
-if(NOT DEFINED IOS)
-    if(DEFINED CMAKE_SYSTEM_NAME)
-        string(TOLOWER CMAKE_SYSTEM_NAME CMAKE_SYSTEM_NAME_LOWER)
-        if(CMAKE_SYSTEM_NAME_LOWER STREQUAL "ios")
-            set(IOS true)
-        endif()
-    endif()
-endif()
+IF (NOT DEFINED IOS)
+    IF (DEFINED CMAKE_SYSTEM_NAME)
+        STRING(TOLOWER CMAKE_SYSTEM_NAME CMAKE_SYSTEM_NAME_LOWER)
+        IF (CMAKE_SYSTEM_NAME_LOWER STREQUAL "ios")
+            SET(IOS true)
+        ENDIF ()
+    ENDIF ()
+ENDIF ()
 
 # Sources
 #--------------------------------------
-set(SrcLib
-    include/MiniFB.h
-    include/MiniFB_cpp.h
-    include/MiniFB_enums.h
+SET(SrcLib
+        include/MiniFB.h
+        include/MiniFB_cpp.h
+        include/MiniFB_enums.h
 
-    src/MiniFB_common.c
-    src/MiniFB_cpp.cpp
-    src/MiniFB_internal.c
-    src/MiniFB_internal.h
-    src/MiniFB_timer.c
-    src/WindowData.h
-)
-
-#--
-set(SrcWindows
-    src/windows/WinMiniFB.c
-    src/windows/WindowData_Win.h
-)
+        src/MiniFB_common.c
+        src/MiniFB_cpp.cpp
+        src/MiniFB_internal.c
+        src/MiniFB_internal.h
+        src/MiniFB_timer.c
+        src/WindowData.h
+        )
 
 #--
-set(SrcMacOSX
-    src/macosx/MacMiniFB.m
-    src/macosx/OSXWindow.h
-    src/macosx/OSXWindow.m
-    src/macosx/OSXView.h
-    src/macosx/OSXView.m
-    src/macosx/OSXViewDelegate.h
-    src/macosx/OSXViewDelegate.m
-    src/macosx/WindowData_OSX.h
-)
+SET(SrcWindows
+        src/windows/WinMiniFB.c
+        src/windows/WindowData_Win.h
+        )
 
 #--
-set(SrcIOS
-    src/ios/WindowData_IOS.h
-    src/ios/iOSMiniFB.m
-    src/ios/iOSView.h
-    src/ios/iOSView.m
-    src/ios/iOSViewController.h
-    src/ios/iOSViewController.m
-    src/ios/iOSViewDelegate.h
-    src/ios/iOSViewDelegate.m
-    include/MiniFB_ios.h
-)
+SET(SrcMacOSX
+        src/macosx/MacMiniFB.m
+        src/macosx/OSXWindow.h
+        src/macosx/OSXWindow.m
+        src/macosx/OSXView.h
+        src/macosx/OSXView.m
+        src/macosx/OSXViewDelegate.h
+        src/macosx/OSXViewDelegate.m
+        src/macosx/WindowData_OSX.h
+        )
 
 #--
-set(SrcWayland
-    src/wayland/WaylandMiniFB.c
-    src/wayland/WindowData_Way.h
-    src/MiniFB_linux.c
-)
+SET(SrcIOS
+        src/ios/WindowData_IOS.h
+        src/ios/iOSMiniFB.m
+        src/ios/iOSView.h
+        src/ios/iOSView.m
+        src/ios/iOSViewController.h
+        src/ios/iOSViewController.m
+        src/ios/iOSViewDelegate.h
+        src/ios/iOSViewDelegate.m
+        include/MiniFB_ios.h
+        )
 
 #--
-set(SrcX11
-    src/x11/X11MiniFB.c
-    src/x11/WindowData_X11.h
-    src/MiniFB_linux.c
-)
+SET(SrcWayland
+        src/wayland/WaylandMiniFB.c
+        src/wayland/WindowData_Way.h
+        src/MiniFB_linux.c
+        )
 
-set(SrcGL
-    src/gl/MiniFB_GL.h
-    src/gl/MiniFB_GL.c
-)
+#--
+SET(SrcX11
+        src/x11/X11MiniFB.c
+        src/x11/WindowData_X11.h
+        src/MiniFB_linux.c
+        )
+
+SET(SrcGL
+        src/gl/MiniFB_GL.h
+        src/gl/MiniFB_GL.c
+        )
 
 # Avoid RelWithDebInfo and MinSizeRel
 #--------------------------------------
-set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE)
+SET(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE)
 
 # Define Release by default
 #--------------------------------------
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE "Release")
-    message(STATUS "Build type not specified: Use Release by default")
-endif(NOT CMAKE_BUILD_TYPE)
+IF (NOT CMAKE_BUILD_TYPE)
+    SET(CMAKE_BUILD_TYPE "Release")
+    MESSAGE(STATUS "Build type not specified: Use Release by default")
+ENDIF (NOT CMAKE_BUILD_TYPE)
 
 # Set features
 #--------------------------------------
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+SET(CMAKE_CXX_STANDARD 11)
+SET(CMAKE_CXX_STANDARD_REQUIRED ON)
+SET(CMAKE_CXX_EXTENSIONS OFF)
 
 #--------------------------------------
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # Code generation options
 #--------------------------------------
-option(MINIFB_BUILD_EXAMPLES "Build minifb example programs" TRUE)
+OPTION(MINIFB_BUILD_EXAMPLES "Build minifb example programs" TRUE)
 
-if(APPLE AND NOT IOS)
-    option(USE_METAL_API "Build the project using metal API code" ON)
-    option(USE_INVERTED_Y_ON_MACOS "Use default mouse position: (0, 0) at (left, down)" OFF)
-elseif(UNIX)
-    option(USE_WAYLAND_API "Build the project using wayland API code" OFF)
-    if(NOT USE_WAYLAND_API)
-        option(USE_OPENGL_API "Build the project using OpenGL API code" ON)
-    endif()
-elseif(WIN32)
-    option(USE_OPENGL_API "Build the project using OpenGL API code" ON)
-endif()
+IF (APPLE AND NOT IOS)
+    OPTION(USE_METAL_API "Build the project using metal API code" ON)
+    OPTION(USE_INVERTED_Y_ON_MACOS "Use default mouse position: (0, 0) at (left, down)" OFF)
+ELSEIF (UNIX)
+    OPTION(USE_WAYLAND_API "Build the project using wayland API code" OFF)
+    IF (NOT USE_WAYLAND_API)
+        OPTION(USE_OPENGL_API "Build the project using OpenGL API code" ON)
+    ENDIF ()
+ELSEIF (WIN32)
+    OPTION(USE_OPENGL_API "Build the project using OpenGL API code" ON)
+ENDIF ()
 
 # Set GCC/Clang flags
 #--------------------------------------
-if(NOT MSVC)
+IF (NOT MSVC)
     # Avoid default flag values
     #--------------------------------------
-    set(CMAKE_C_FLAGS "")
-    set(CMAKE_C_FLAGS_DEBUG "" )
-    set(CMAKE_C_FLAGS_RELEASE "")
+    SET(CMAKE_C_FLAGS "")
+    SET(CMAKE_C_FLAGS_DEBUG "")
+    SET(CMAKE_C_FLAGS_RELEASE "")
 
-    set(CMAKE_CXX_FLAGS "")
-    set(CMAKE_CXX_FLAGS_DEBUG "")
-    set(CMAKE_CXX_FLAGS_RELEASE "")
+    SET(CMAKE_CXX_FLAGS "")
+    SET(CMAKE_CXX_FLAGS_DEBUG "")
+    SET(CMAKE_CXX_FLAGS_RELEASE "")
 
-    set(CMAKE_OBJC_FLAGS "")
-    set(CMAKE_OBJC_FLAGS_DEBUG "")
-    set(CMAKE_OBJC_FLAGS_RELEASE "")
+    SET(CMAKE_OBJC_FLAGS "")
+    SET(CMAKE_OBJC_FLAGS_DEBUG "")
+    SET(CMAKE_OBJC_FLAGS_RELEASE "")
 
-    set(CMAKE_OBJCXX_FLAGS "")
-    set(CMAKE_OBJCXX_FLAGS_DEBUG "")
-    set(CMAKE_OBJCXX_FLAGS_RELEASE "")
+    SET(CMAKE_OBJCXX_FLAGS "")
+    SET(CMAKE_OBJCXX_FLAGS_DEBUG "")
+    SET(CMAKE_OBJCXX_FLAGS_RELEASE "")
 
     # Set our flags
     #--------------------------------------
-    add_compile_options("$<$<CONFIG:Debug>:-g>")
-    add_compile_options("$<IF:$<CONFIG:Debug>,-O0,-O2>")
-    add_compile_options(-Wall -Wextra)
-    add_compile_options(-Wno-switch -Wno-unused-function -Wno-unused-parameter -Wno-implicit-fallthrough)
+    ADD_COMPILE_OPTIONS("$<$<CONFIG:Debug>:-g>")
+    ADD_COMPILE_OPTIONS("$<IF:$<CONFIG:Debug>,-O0,-O2>")
+    ADD_COMPILE_OPTIONS(-Wall -Wextra)
+    ADD_COMPILE_OPTIONS(-Wno-switch -Wno-unused-function -Wno-unused-parameter -Wno-implicit-fallthrough)
 
-    if(NOT APPLE)
-        add_compile_options(-Wno-cast-function-type)
-    endif()
-else()
+    IF (NOT APPLE)
+        ADD_COMPILE_OPTIONS(-Wno-cast-function-type)
+    ENDIF ()
+ELSE ()
     # Security check
-    add_compile_options(/GS)
+    ADD_COMPILE_OPTIONS(/GS)
     # Function level linking
-    add_compile_options(/Gy)
+    ADD_COMPILE_OPTIONS(/Gy)
     # Exceptions
-    add_compile_options(/EHsc)
-    if(MSVC_VERSION GREATER_EQUAL 1900)
+    ADD_COMPILE_OPTIONS(/EHsc)
+    IF (MSVC_VERSION GREATER_EQUAL 1900)
         # SDL checks 2015+
-        add_compile_options(/sdl)
-    endif()
-    if(MSVC_VERSION LESS_EQUAL 1920)
+        ADD_COMPILE_OPTIONS(/sdl)
+    ENDIF ()
+    IF (MSVC_VERSION LESS_EQUAL 1920)
         # Enable Minimal Rebuild (required for Edit and Continue) (deprecated)
-        add_compile_options(/Gm)
-    endif()
-    add_compile_options(/fp:fast)
+        ADD_COMPILE_OPTIONS(/Gm)
+    ENDIF ()
+    ADD_COMPILE_OPTIONS(/fp:fast)
     # Runtime library
-    add_compile_options("$<IF:$<CONFIG:Debug>,/MDd,/MD>")
+    ADD_COMPILE_OPTIONS("$<IF:$<CONFIG:Debug>,/MDd,/MD>")
     # Program database for edit and continue
-    add_compile_options("$<IF:$<CONFIG:Debug>,/ZI,/Zi>")
+    ADD_COMPILE_OPTIONS("$<IF:$<CONFIG:Debug>,/ZI,/Zi>")
     # Optimizations
-    add_compile_options("$<IF:$<CONFIG:Debug>,/Od,/O2>")
+    ADD_COMPILE_OPTIONS("$<IF:$<CONFIG:Debug>,/Od,/O2>")
     # Inline function expansion
-    add_compile_options("$<IF:$<CONFIG:Debug>,/Ob0,/Ob2>")
+    ADD_COMPILE_OPTIONS("$<IF:$<CONFIG:Debug>,/Ob0,/Ob2>")
     # Basic runtime checks
-    add_compile_options("$<$<CONFIG:Debug>:/RTC1>")
+    ADD_COMPILE_OPTIONS("$<$<CONFIG:Debug>:/RTC1>")
     # Force Visual Studio to actualize __cplusplus version macro
-    add_compile_options(/Zc:__cplusplus)
+    ADD_COMPILE_OPTIONS(/Zc:__cplusplus)
 
-endif()
+ENDIF ()
 
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    add_definitions(-D_DEBUG)
-    add_definitions(-DDEBUG)
-endif()
+IF (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    ADD_DEFINITIONS(-D_DEBUG)
+    ADD_DEFINITIONS(-DDEBUG)
+ENDIF ()
 
 # Set compiler/platform specific flags and dependencies
 #--------------------------------------
-if(WIN32)
+IF (WIN32)
 
-    if(MSVC)
-        add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-    endif()
-    add_definitions(-D_WIN32_WINNT=0x0601)  # Windows 7 (we are in 2020)
+    IF (MSVC)
+        ADD_DEFINITIONS(-D_CRT_SECURE_NO_WARNINGS)
+    ENDIF ()
+    ADD_DEFINITIONS(-D_WIN32_WINNT=0x0601)  # Windows 7 (we are in 2020)
 
-    if(USE_OPENGL_API)
-        list(APPEND SrcLib ${SrcGL})
+    IF (USE_OPENGL_API)
+        LIST(APPEND SrcLib ${SrcGL})
 
-        add_definitions(-DUSE_OPENGL_API)
-    endif()
+        ADD_DEFINITIONS(-DUSE_OPENGL_API)
+    ENDIF ()
 
-    list(APPEND SrcLib ${SrcWindows})
+    LIST(APPEND SrcLib ${SrcWindows})
 
-elseif(IOS)
+ELSEIF (IOS)
 
-    list(APPEND SrcLib ${SrcIOS})
+    LIST(APPEND SrcLib ${SrcIOS})
 
-elseif(APPLE)
+ELSEIF (APPLE)
 
-    if(USE_METAL_API)
-        add_definitions(-DUSE_METAL_API)
-    endif()
+    IF (USE_METAL_API)
+        ADD_DEFINITIONS(-DUSE_METAL_API)
+    ENDIF ()
 
-    if(USE_INVERTED_Y_ON_MACOS)
-        add_definitions(-DUSE_INVERTED_Y_ON_MACOS)
-    endif()
+    IF (USE_INVERTED_Y_ON_MACOS)
+        ADD_DEFINITIONS(-DUSE_INVERTED_Y_ON_MACOS)
+    ENDIF ()
 
-    list(APPEND SrcLib ${SrcMacOSX})
+    LIST(APPEND SrcLib ${SrcMacOSX})
 
-elseif(UNIX)
+ELSEIF (UNIX)
 
-    if(USE_WAYLAND_API)
-        list(APPEND SrcLib ${SrcWayland})
-    else()
-        if(USE_OPENGL_API)
-            list(APPEND SrcLib ${SrcGL})
+    IF (USE_WAYLAND_API)
+        LIST(APPEND SrcLib ${SrcWayland})
+    ELSE ()
+        IF (USE_OPENGL_API)
+            LIST(APPEND SrcLib ${SrcGL})
 
-            add_definitions(-DUSE_OPENGL_API)
-        endif()
-        list(APPEND SrcLib ${SrcX11})
-    endif()
+            ADD_DEFINITIONS(-DUSE_OPENGL_API)
+        ENDIF ()
+        LIST(APPEND SrcLib ${SrcX11})
+    ENDIF ()
 
-endif()
+ENDIF ()
 
 # Library
 #--------------------------------------
-add_library(minifb STATIC
-    ${SrcLib}
-)
+ADD_LIBRARY(minifb STATIC
+        ${SrcLib}
+        )
 
 # Link
 #--------------------------------------
-if(APPLE)
+IF (APPLE)
 
-    if(IOS)
-        target_link_libraries(minifb
-            "-framework UIKit"
-            "-framework QuartzCore"
-            "-framework Metal"
-            "-framework MetalKit"
-        )
-    else()
-        target_link_libraries(minifb
-            "-framework Cocoa"
-            "-framework QuartzCore"
-            "-framework Metal"
-            "-framework MetalKit"
-        )
-    endif()
+    IF (IOS)
+        TARGET_LINK_LIBRARIES(minifb
+                "-framework UIKit"
+                "-framework QuartzCore"
+                "-framework Metal"
+                "-framework MetalKit"
+                )
+    ELSE ()
+        TARGET_LINK_LIBRARIES(minifb
+                "-framework Cocoa"
+                "-framework QuartzCore"
+                "-framework Metal"
+                "-framework MetalKit"
+                )
+    ENDIF ()
 
-elseif(UNIX)
+ELSEIF (UNIX)
 
-    if(USE_WAYLAND_API)
-        target_link_libraries(minifb
-            "-lwayland-client"
-            "-lwayland-cursor"
-        )
-    else()
-        target_link_libraries(minifb
-            "-lX11"
-            #"-lxkbcommon"
-            #"-lXrandr" DPI NOT WORKING
-        )
-        if(USE_OPENGL_API)
-        target_link_libraries(minifb
-            "-lGL"
-        )
-        endif()
-    endif()
+    IF (USE_WAYLAND_API)
+        TARGET_LINK_LIBRARIES(minifb
+                "-lwayland-client"
+                "-lwayland-cursor"
+                )
+    ELSE ()
+        TARGET_LINK_LIBRARIES(minifb
+                "-lX11"
+                #"-lxkbcommon"
+                #"-lXrandr" DPI NOT WORKING
+                )
+        IF (USE_OPENGL_API)
+            TARGET_LINK_LIBRARIES(minifb
+                    "-lGL"
+                    )
+        ENDIF ()
+    ENDIF ()
 
-elseif(WIN32)
+ELSEIF (WIN32)
 
-    if(USE_OPENGL_API)
-        target_link_libraries(minifb
-            "Opengl32.lib"
-        )
-    endif()
+    IF (USE_OPENGL_API)
+        TARGET_LINK_LIBRARIES(minifb
+                "Opengl32.lib"
+                )
+    ENDIF ()
 
-endif()
+ENDIF ()
 
 # For all projects
 #--------------------------------------
-target_include_directories(minifb PUBLIC  ${CMAKE_CURRENT_LIST_DIR}/include)
-target_include_directories(minifb PRIVATE src)
+TARGET_INCLUDE_DIRECTORIES(minifb PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
+TARGET_INCLUDE_DIRECTORIES(minifb PRIVATE src)
 
-link_libraries(minifb)
+LINK_LIBRARIES(minifb)
 
 # Examples
 #--------------------------------------
-if(MINIFB_BUILD_EXAMPLES)
-    if(NOT IOS)
+IF (MINIFB_BUILD_EXAMPLES)
+    IF (NOT IOS)
 
-        add_executable(noise
-            tests/noise.c
-        )
+        ADD_EXECUTABLE(noise
+                tests/noise.c
+                )
 
-        add_executable(input_events
-            tests/input_events.c
-        )
+        ADD_EXECUTABLE(input_events
+                tests/input_events.c
+                )
 
-        add_executable(input_events_cpp
-            tests/input_events_cpp.cpp
-        )
+        ADD_EXECUTABLE(input_events_cpp
+                tests/input_events_cpp.cpp
+                )
 
-        add_executable(multiple_windows
-            tests/multiple_windows.c
-        )
+        ADD_EXECUTABLE(multiple_windows
+                tests/multiple_windows.c
+                )
 
-        add_executable(hidpi
-            tests/hidpi.c
-        )
+        ADD_EXECUTABLE(hidpi
+                tests/hidpi.c
+                )
 
-    else()
+    ELSE ()
 
-        add_executable(noise
-            tests/ios/main.m
-            tests/ios/AppDelegate.h
-            tests/ios/AppDelegate.m
-        )
+        ADD_EXECUTABLE(noise
+                tests/ios/main.m
+                tests/ios/AppDelegate.h
+                tests/ios/AppDelegate.m
+                )
 
-        set(CMAKE_OSX_DEPLOYMENT_TARGET "11.0" CACHE STRING "Set CMake deployment target" ${FORCE_CACHE})
+        SET(CMAKE_OSX_DEPLOYMENT_TARGET "11.0" CACHE STRING "Set CMake deployment target" ${FORCE_CACHE})
 
-        target_include_directories(noise PRIVATE src)
-        target_include_directories(noise PRIVATE src/ios)
+        TARGET_INCLUDE_DIRECTORIES(noise PRIVATE src)
+        TARGET_INCLUDE_DIRECTORIES(noise PRIVATE src/ios)
 
-        add_definitions(-DTVOS_DEPLOYMENT_TARGET=${CMAKE_OSX_DEPLOYMENT_TARGET})
+        ADD_DEFINITIONS(-DTVOS_DEPLOYMENT_TARGET=${CMAKE_OSX_DEPLOYMENT_TARGET})
 
-    endif()
+    ENDIF ()
 
-endif()
+ENDIF ()
 
-message("Done " ${PROJECT_NAME})
+MESSAGE("Done " ${PROJECT_NAME})

@@ -11,26 +11,26 @@ extern double   g_timer_resolution;
 
 uint64_t 
 mfb_timer_tick() {
-    struct timespec time;
+	struct timespec time;
 
-    if (clock_gettime(kClock, &time) != 0) {
-        return 0.0;
-    }
+	if (clock_gettime(kClock, &time) != 0) {
+		return 0.0;
+	}
 
-    return time.tv_sec * 1e+9 + time.tv_nsec;
+	return time.tv_sec * 1e+9 + time.tv_nsec;
 }
 
-void 
+void
 mfb_timer_init() {
-    struct timespec res;
+	struct timespec res;
 
-    if (clock_getres(kClock, &res) != 0) {
-        g_timer_frequency = 1e+9;
-    }
-    else {
-        g_timer_frequency = res.tv_sec + res.tv_nsec * 1e+9;
-    }
-    g_timer_resolution = 1.0 / g_timer_frequency;
+	if (clock_getres(kClock, &res) != 0) {
+		g_timer_frequency = 1e+9;
+	}
+	else {
+		g_timer_frequency = res.tv_sec + res.tv_nsec * 1e+9;
+	}
+	g_timer_resolution = 1.0 / g_timer_frequency;
 }
 
 #endif

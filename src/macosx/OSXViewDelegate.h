@@ -12,19 +12,19 @@ enum { MaxBuffersInFlight = 3 };
 
 @interface OSXViewDelegate : NSViewController<MTKViewDelegate>
 {
-    @public SWindowData         *window_data;
-    @public SWindowData_OSX     *window_data_osx;
+	@public SWindowData         *window_data;
+	@public SWindowData_OSX     *window_data_osx;
 
-    id<MTLDevice>               metal_device;
-    id<MTLLibrary>              metal_library;
+	id<MTLDevice>               metal_device;
+	id<MTLLibrary>              metal_library;
 
-    dispatch_semaphore_t        semaphore;    // Used for syncing with CPU/GPU
-    id<MTLCommandQueue>         command_queue;
+	dispatch_semaphore_t        semaphore;    // Used for syncing with CPU/GPU
+	id<MTLCommandQueue>         command_queue;
 
-    id<MTLRenderPipelineState>  pipeline_state;
-    id<MTLTexture>              texture_buffers[MaxBuffersInFlight];
+	id<MTLRenderPipelineState>  pipeline_state;
+	id<MTLTexture>              texture_buffers[MaxBuffersInFlight];
 
-    int                         current_buffer;
+	int                         current_buffer;
 }
 
 - (id) initWithWindowData:(SWindowData *) windowData;
