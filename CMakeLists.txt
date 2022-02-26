@@ -376,3 +376,9 @@ ADD_EXECUTABLE(MiniBuffer.PNG.App tests/PNG/App.cpp)
 TARGET_INCLUDE_DIRECTORIES(MiniBuffer.PNG.App PRIVATE src)
 TARGET_INCLUDE_DIRECTORIES(MiniBuffer.PNG.App PRIVATE src/ios)
 TARGET_LINK_LIBRARIES(MiniBuffer.PNG.App PRIVATE Spng::Framework)
+
+# Reference: https://www.py4u.net/discuss/2364298
+ADD_CUSTOM_COMMAND(TARGET MiniBuffer.PNG.App POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${SPNG_BINARY_DIR}
+        $<TARGET_FILE_DIR:MiniBuffer.PNG.App>)
