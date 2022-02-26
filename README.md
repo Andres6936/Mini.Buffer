@@ -27,32 +27,35 @@ do {
 
 1. First the application creates a **window** calling **mfb_open** or **mfb_open_ex**.
 2. Next it's the application responsibility to allocate a buffer to work with.
-3. Next calling **mfb_update** or **mfb_update_ex** the buffer will be copied over to the window and displayed. If this function return a value lower than 0 the window will have been destroyed internally and cannot be used anymore.
+3. Next calling **mfb_update** or **mfb_update_ex** the buffer will be copied over to the window and displayed. If this
+   function return a value lower than 0 the window will have been destroyed internally and cannot be used anymore.
 4. Last the code waits to synchronize with the monitor calling **mfb_wait_sync**.
 
-Note that, by default, if ESC key is pressed **mfb_update** / **mfb_update_ex** will return -1 (and the window will have been destroyed internally).
+Note that, by default, if ESC key is pressed **mfb_update** / **mfb_update_ex** will return -1 (and the window will have
+been destroyed internally).
 
 See https://github.com/emoon/minifb/blob/master/tests/noise.c for a complete example.
 
 # Supported Platforms:
 
- - Windows
- - MacOS X
- - X11 (FreeBSD, Linux, *nix)
- - Wayland (Linux) [there are some issues]
- - iOS (beta)
- - Android (beta)
+- Windows
+- MacOS X
+- X11 (FreeBSD, Linux, *nix)
+- Wayland (Linux) [there are some issues]
+- iOS (beta)
+- Android (beta)
 
-MiniFB has been tested on Windows, Mac OS X, Linux, iOS and Android but may of course have trouble depending on your setup. Currently the code will not do any converting of data if not a proper 32-bit display can be created.
+MiniFB has been tested on Windows, Mac OS X, Linux, iOS and Android but may of course have trouble depending on your
+setup. Currently the code will not do any converting of data if not a proper 32-bit display can be created.
 
 # Features:
 
- - Window creation
- - Callbacks to window events
- - Get information from windows
- - Add per window data
- - Timers and target FPS
- - C and C++ interface
+- Window creation
+- Callbacks to window events
+- Get information from windows
+- Add per window data
+- Timers and target FPS
+- C and C++ interface
 
 ## Callbacks to window events:
 
@@ -224,16 +227,18 @@ Note that if you have several windows running on the same thread it makes no sen
 
 The current build system is **CMake**.
 
-Initially MiniFB used tundra [https://github.com/deplinenoise/tundra](https://github.com/deplinenoise/tundra) as build system and it was required to build the code (but now is not maintained).
+Initially MiniFB used tundra [https://github.com/deplinenoise/tundra](https://github.com/deplinenoise/tundra) as build
+system and it was required to build the code (but now is not maintained).
 
 In any case, not many changes should be needed if you want to use MiniFB directly in your own code.
 
 ## MacOS X
 
-Cocoa and clang is assumed to be installed on the system (downloading latest XCode + installing the command line tools should do the trick).
+Cocoa and clang is assumed to be installed on the system (downloading latest XCode + installing the command line tools
+should do the trick).
 
-Note that MacOS X Mojave+ does not support Cocoa framework as expected. For that reason you can switch to Metal API.
-To enable it just compile defining the preprocessor macro USE_METAL_API.
+Note that MacOS X Mojave+ does not support Cocoa framework as expected. For that reason you can switch to Metal API. To
+enable it just compile defining the preprocessor macro USE_METAL_API.
 
 If you use **CMake** just enable the flag:
 
@@ -253,7 +258,8 @@ cmake .. -DUSE_METAL_API=OFF
 
 ### Coordinate system
 
-On MacOS, the default mouse coordinate system is (0, 0) -> (left, bottom). But as we want to create a multiplatform library we inverted the coordinates in such a way that now (0, 0) -> (left, top), like in the other platforms.
+On MacOS, the default mouse coordinate system is (0, 0) -> (left, bottom). But as we want to create a multiplatform
+library we inverted the coordinates in such a way that now (0, 0) -> (left, top), like in the other platforms.
 
 In any case, if you want to get the default coordinate system you can use the CMake flag: USE_INVERTED_Y_ON_MACOS=ON
 
@@ -263,7 +269,8 @@ cd build
 cmake .. -DUSE_INVERTED_Y_ON_MACOS=ON
 ```
 
-_Note: In the future, we may use a global option so that all platforms behave in the same way. Probably: -DUSE_INVERTED_Y_
+_Note: In the future, we may use a global option so that all platforms behave in the same way. Probably:
+-DUSE_INVERTED_Y_
 
 if you use **tundra**:
 
@@ -275,21 +282,21 @@ and you should be able to run the noise example (t2-output/macosx-clang-debug-de
 
 ## iOS (beta)
 
-It works with and without an UIWindow created.
-If you want to create the UIWindow through an Story Board, remember to set the UIViewController as iOSViewController and the UIView as iOSView.
+It works with and without an UIWindow created. If you want to create the UIWindow through an Story Board, remember to
+set the UIViewController as iOSViewController and the UIView as iOSView.
 
 **Issues:**
 
 - It seems that you have to manually set 'tvOS Deployment Target' to less than 13.
-- It seems that you have to manually set 'Launch Screen File' in project > executable > general to be able to get the real device height.
+- It seems that you have to manually set 'Launch Screen File' in project > executable > general to be able to get the
+  real device height.
 - You need to manually set the 'Signing Team' and 'Bundle Identifier'.
 - No multitouch is available yet.
 - As this version uses Metal API it cannot be run in the emulator.
 
 **Functions:**
 
-Some of the MiniFB functions don't make sense on mobile.
-The available functions for iOS are:
+Some of the MiniFB functions don't make sense on mobile. The available functions for iOS are:
 
 ```c
 struct mfb_window * mfb_open(const char *title, unsigned width, unsigned height);
@@ -389,8 +396,7 @@ Take a look at the example in tests/android. You need **Android Studio** to buil
 
 **Functions:**
 
-Some of the MiniFB functions don't make sense on mobile.
-The available functions for Android are:
+Some of the MiniFB functions don't make sense on mobile. The available functions for Android are:
 
 ```c
 struct mfb_window * mfb_open(const char *title, unsigned width, unsigned height);
@@ -439,7 +445,8 @@ Furthermore you can also use **MinGW** instead of Visual Studio.
 
 if you use **tundra**:
 
-Visual Studio (ver 2012 express has been tested) tools needed (using the vcvars32.bat (for 32-bit) will set up the enviroment) to build run:
+Visual Studio (ver 2012 express has been tested) tools needed (using the vcvars32.bat (for 32-bit) will set up the
+enviroment) to build run:
 
 ```bash
 tundra2 win32-msvc-debug
@@ -449,7 +456,8 @@ and you should be able to run noise in t2-output/win32-msvc-debug-default/noise.
 
 ### OpenGL API backend
 
-Now, by default, OpenGL backend is used, instead of Windows GDI, because it is faster. To maintain compatibility with old computers an OpenGL 1.5 context is created (no shaders needed).
+Now, by default, OpenGL backend is used, instead of Windows GDI, because it is faster. To maintain compatibility with
+old computers an OpenGL 1.5 context is created (no shaders needed).
 
 To enable or disable OpenGL just use a CMake flag:
 
@@ -483,7 +491,8 @@ and you should be able to run t2-output/x11-gcc-debug-default/noise
 
 ### OpenGL API backend
 
-Now, by default, OpenGL backend is used instead of X11 XImages because it is faster. To maintain compatibility with old computers an OpenGL 1.5 context is created (no shaders needed).
+Now, by default, OpenGL backend is used instead of X11 XImages because it is faster. To maintain compatibility with old
+computers an OpenGL 1.5 context is created (no shaders needed).
 
 To enable or disable OpenGL just use a CMake flag:
 

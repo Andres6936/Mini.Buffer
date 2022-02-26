@@ -118,7 +118,7 @@ double mfb_timer_get_resolution(void);
 }
 
 #if !defined(MINIFB_AVOID_CPP_HEADERS)
-    #include "MiniFB_cpp.h"
+#include "MiniFB_cpp.h"
 #endif
 
 #endif
