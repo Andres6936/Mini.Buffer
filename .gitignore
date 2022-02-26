@@ -13,3 +13,4 @@ t2-output
 build
 kk
 vc
+cmake-build-*/
