@@ -3,6 +3,7 @@
 #include <inttypes.h>
 #include <stdio.h>
 #include <iostream>
+#include <vector>
 
 class App
 {
@@ -16,7 +17,9 @@ private:
 	spng_text* text = NULL;
 	spng_ctx* ctx = NULL;
 	size_t out_size, out_width;
-	unsigned char* out = NULL;
+
+	std::vector<unsigned char> out;
+
 	/* Output format, does not depend on source PNG format except for
 		   SPNG_FMT_PNG, which is the PNG's format in host-endian or
 		   big-endian for SPNG_FMT_RAW.
@@ -38,7 +41,6 @@ public:
 	{
 		spng_ctx_free(ctx);
 		spng_ctx_free(enc);
-		free(out);
 	}
 
 	static std::string getTypeColor(const spng_ihdr& ihdr) {
@@ -143,9 +145,7 @@ public:
 		if (ret)
 		{ throw std::exception("error"); }
 
-		out = static_cast<unsigned char*>(malloc(out_size));
-		if (out == NULL)
-		{ throw std::exception("error"); }
+		out.resize(out_size);
 
 		/* This is required to initialize for progressive decoding */
 		ret = spng_decode_image(ctx, NULL, 0, fmt, SPNG_DECODE_PROGRESSIVE);
@@ -167,7 +167,7 @@ public:
 			if (ret)
 			{ break; }
 
-			ret = spng_decode_row(ctx, out + row_info.row_num * out_width, out_width);
+			ret = spng_decode_row(ctx, out.data() + row_info.row_num * out_width, out_width);
 		} while (!ret);
 
 		if (ret != SPNG_EOI)
@@ -275,7 +275,7 @@ public:
 			fmt = SPNG_FMT_PNG;
 
 			/* SPNG_ENCODE_FINALIZE will finalize the PNG with the end-of-file marker */
-			ret = spng_encode_image(enc, out, out_size, fmt, SPNG_ENCODE_FINALIZE);
+			ret = spng_encode_image(enc, out.data(), out_size, fmt, SPNG_ENCODE_FINALIZE);
 
 			if (ret)
 			{
