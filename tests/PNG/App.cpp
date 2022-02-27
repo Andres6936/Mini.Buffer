@@ -21,6 +21,7 @@ private:
 	mfb_window* window;
 
 	std::vector<unsigned char> out;
+	std::vector<std::uint32_t> buffer;
 
 	/* Output format, does not depend on source PNG format except for
 		   SPNG_FMT_PNG, which is the PNG's format in host-endian or
@@ -39,6 +40,9 @@ public:
 		ctx = spng_ctx_new(0);
 		window = mfb_open_ex("Noise Test", 800, 600, WF_RESIZABLE);
 		mfb_set_viewport(window, 50, 50, 800 - 50 - 50, 600 - 50 - 50);
+		buffer.resize(800 * 600 * 4);
+		mfb_update_state state = mfb_update_ex(window, buffer.data(), 800, 600);
+		mfb_wait_sync(window);
 	}
 
 	~App()
