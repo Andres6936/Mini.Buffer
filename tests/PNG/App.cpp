@@ -36,56 +36,6 @@ public:
 
 	~App()
 	{
-		if (isNoText){
-			free(text);
-
-			/* The encoder supports all PNG formats but format conversion support is limited */
-			if (fmt != SPNG_FMT_PNG)
-			{ throw std::exception("skip encode"); }
-
-			/* This example reencodes the decoded image */
-
-
-
-			/* Encode to internal buffer managed by the library */
-			spng_set_option(enc, SPNG_ENCODE_TO_BUFFER, 1);
-
-			/* Alternatively you can set an output FILE* or stream with spng_set_png_file() or spng_set_png_stream() */
-
-			/* In this case we're reencoding to the same PNG format */
-			spng_set_ihdr(enc, &ihdr);
-
-			/* Copy the palette from the source file */
-			if (plte.n_entries > 0)
-			{ spng_set_plte(enc, &plte); }
-
-			/* SPNG_FMT_PNG is a special value that matches the format in ihdr */
-			fmt = SPNG_FMT_PNG;
-
-			/* SPNG_ENCODE_FINALIZE will finalize the PNG with the end-of-file marker */
-			ret = spng_encode_image(enc, out, out_size, fmt, SPNG_ENCODE_FINALIZE);
-
-			if (ret)
-			{
-				printf("spng_encode_image() error: %s\n", spng_strerror(ret));
-				throw std::exception("encode error");
-			}
-
-			size_t png_size;
-			void* png_buf = NULL;
-
-			/* Get the internal buffer of the finished PNG */
-			png_buf = spng_get_png_buffer(enc, &png_size, &ret);
-
-			if (png_buf == NULL)
-			{
-				printf("spng_get_png_buffer() error: %s\n", spng_strerror(ret));
-			}
-
-			/* User owns the buffer after a successful call */
-			free(png_buf);
-		}
-
 		spng_ctx_free(ctx);
 		spng_ctx_free(enc);
 		free(out);
@@ -112,6 +62,17 @@ public:
 		{
 			return "truecolor with alpha";
 		}
+	}
+
+	static void printGeneralInformation(const spng_ihdr& ihdr){
+		std::cout << "width: " << ihdr.width << "\n";
+		std::cout << "height: " << ihdr.height << "\n";
+		std::cout << "bit depth: " << ihdr.bit_depth << "\n";
+		std::cout << "color type: " << ihdr.color_type << " - " << getTypeColor(ihdr) << "\n";
+
+		std::cout << "compression method: " << ihdr.compression_method << "\n";
+		std::cout << "filter method: " << ihdr.filter_method << "\n";
+		std::cout << "interlace method: " << ihdr.interlace_method << "\n";
 	}
 
 	int run(int argc, char** argv)
@@ -157,18 +118,7 @@ public:
 			throw std::exception("error");
 		}
 
-		const std::string clr_type_str = getTypeColor(ihdr);
-
-		std::cout << "width: " << ihdr.width << "\n";
-		std::cout << "height: " << ihdr.height << "\n";
-		std::cout << "bit depth: " << ihdr.bit_depth << "\n";
-		std::cout << "color type: " << ihdr.color_type << " - " << clr_type_str << "\n";
-
-
-		printf("compression method: %" PRIu8 "\nfilter method: %" PRIu8 "\n"
-			   "interlace method: %" PRIu8 "\n",
-				ihdr.compression_method, ihdr.filter_method,
-				ihdr.interlace_method);
+		printGeneralInformation(ihdr);
 
 
 		ret = spng_get_plte(ctx, &plte);
@@ -298,6 +248,55 @@ public:
 			printf("text: %s\n", text[i].text);
 		}
 
+		if (isNoText){
+			free(text);
+
+			/* The encoder supports all PNG formats but format conversion support is limited */
+			if (fmt != SPNG_FMT_PNG)
+			{ throw std::exception("skip encode"); }
+
+			/* This example reencodes the decoded image */
+
+
+
+			/* Encode to internal buffer managed by the library */
+			spng_set_option(enc, SPNG_ENCODE_TO_BUFFER, 1);
+
+			/* Alternatively you can set an output FILE* or stream with spng_set_png_file() or spng_set_png_stream() */
+
+			/* In this case we're reencoding to the same PNG format */
+			spng_set_ihdr(enc, &ihdr);
+
+			/* Copy the palette from the source file */
+			if (plte.n_entries > 0)
+			{ spng_set_plte(enc, &plte); }
+
+			/* SPNG_FMT_PNG is a special value that matches the format in ihdr */
+			fmt = SPNG_FMT_PNG;
+
+			/* SPNG_ENCODE_FINALIZE will finalize the PNG with the end-of-file marker */
+			ret = spng_encode_image(enc, out, out_size, fmt, SPNG_ENCODE_FINALIZE);
+
+			if (ret)
+			{
+				printf("spng_encode_image() error: %s\n", spng_strerror(ret));
+				throw std::exception("encode error");
+			}
+
+			size_t png_size;
+			void* png_buf = NULL;
+
+			/* Get the internal buffer of the finished PNG */
+			png_buf = spng_get_png_buffer(enc, &png_size, &ret);
+
+			if (png_buf == NULL)
+			{
+				printf("spng_get_png_buffer() error: %s\n", spng_strerror(ret));
+			}
+
+			/* User owns the buffer after a successful call */
+			free(png_buf);
+		}
 
 		return ret;
 	}
