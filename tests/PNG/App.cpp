@@ -1,4 +1,5 @@
 #include <spng.h>
+#include <MiniFB.h>
 
 #include <inttypes.h>
 #include <stdio.h>
@@ -17,6 +18,7 @@ private:
 	spng_text* text = NULL;
 	spng_ctx* ctx = NULL;
 	size_t out_size, out_width;
+	mfb_window* window;
 
 	std::vector<unsigned char> out;
 
@@ -35,6 +37,8 @@ public:
 	App()
 	{
 		ctx = spng_ctx_new(0);
+		window = mfb_open_ex("Noise Test", 800, 600, WF_RESIZABLE);
+		mfb_set_viewport(window, 50, 50, 800 - 50 - 50, 600 - 50 - 50);
 	}
 
 	~App()
