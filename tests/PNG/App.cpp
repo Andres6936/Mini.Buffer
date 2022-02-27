@@ -91,6 +91,29 @@ public:
 		free(out);
 	}
 
+	static std::string getTypeColor(const spng_ihdr& ihdr) {
+		if (ihdr.color_type == SPNG_COLOR_TYPE_GRAYSCALE)
+		{
+			return "grayscale";
+		}
+		else if (ihdr.color_type == SPNG_COLOR_TYPE_TRUECOLOR)
+		{
+			return "truecolor";
+		}
+		else if (ihdr.color_type == SPNG_COLOR_TYPE_INDEXED)
+		{
+			return "indexed color";
+		}
+		else if (ihdr.color_type == SPNG_COLOR_TYPE_GRAYSCALE_ALPHA)
+		{
+			return "grayscale with alpha";
+		}
+		else
+		{
+			return "truecolor with alpha";
+		}
+	}
+
 	int run(int argc, char** argv)
 	{
 		if (argc < 2)
@@ -134,29 +157,7 @@ public:
 			throw std::exception("error");
 		}
 
-		char* clr_type_str;
-
-		if (ihdr.color_type == SPNG_COLOR_TYPE_GRAYSCALE)
-		{
-			clr_type_str = "grayscale";
-		}
-		else if (ihdr.color_type == SPNG_COLOR_TYPE_TRUECOLOR)
-		{
-			clr_type_str = "truecolor";
-		}
-		else if (ihdr.color_type == SPNG_COLOR_TYPE_INDEXED)
-		{
-			clr_type_str = "indexed color";
-		}
-		else if (ihdr.color_type == SPNG_COLOR_TYPE_GRAYSCALE_ALPHA)
-		{
-			clr_type_str = "grayscale with alpha";
-		}
-		else
-		{
-			clr_type_str = "truecolor with alpha";
-		}
-
+		const std::string clr_type_str = getTypeColor(ihdr);
 
 		std::cout << "width: " << ihdr.width << "\n";
 		std::cout << "height: " << ihdr.height << "\n";
@@ -296,8 +297,6 @@ public:
 			printf("text length: %lu\n", (unsigned long int)text[i].length);
 			printf("text: %s\n", text[i].text);
 		}
-
-	no_text:
 
 
 		return ret;
