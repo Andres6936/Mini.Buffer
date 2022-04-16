@@ -1,8 +1,8 @@
 #include <spng.h>
 #include <MiniFB.h>
 
-#include <inttypes.h>
-#include <stdio.h>
+#include <cinttypes>
+#include <cstdio>
 #include <iostream>
 #include <vector>
 
@@ -20,8 +20,8 @@ private:
 	size_t out_size, out_width;
 	mfb_window* window;
 
-	std::vector<unsigned char> out;
-	std::vector<std::uint32_t> buffer;
+	std::vector <unsigned char> out;
+	std::vector <std::uint32_t> buffer;
 
 	/* Output format, does not depend on source PNG format except for
 		   SPNG_FMT_PNG, which is the PNG's format in host-endian or
@@ -51,7 +51,8 @@ public:
 		spng_ctx_free(enc);
 	}
 
-	static std::string getTypeColor(const spng_ihdr& ihdr) {
+	static std::string getTypeColor(const spng_ihdr& ihdr)
+	{
 		if (ihdr.color_type == SPNG_COLOR_TYPE_GRAYSCALE)
 		{
 			return "grayscale";
@@ -74,7 +75,8 @@ public:
 		}
 	}
 
-	static void printGeneralInformation(const spng_ihdr& ihdr){
+	static void printGeneralInformation(const spng_ihdr& ihdr)
+	{
 		std::cout << "width: " << ihdr.width << "\n";
 		std::cout << "height: " << ihdr.height << "\n";
 		std::cout << "bit depth: " << ihdr.bit_depth << "\n";
@@ -256,7 +258,8 @@ public:
 			printf("text: %s\n", text[i].text);
 		}
 
-		if (isNoText){
+		if (isNoText)
+		{
 			free(text);
 
 			/* The encoder supports all PNG formats but format conversion support is limited */
@@ -313,5 +316,13 @@ public:
 
 int main(int argc, char** argv)
 {
-	return (new App())->run(argc, argv);
+	try
+	{
+		return (new App())->run(argc, argv);
+	}
+	catch (std::exception& exception)
+	{
+		std::cout << "Error: " << exception.what();
+		return -1;
+	}
 }
