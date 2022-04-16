@@ -56,10 +56,16 @@ CPMADDPACKAGE(
 ADD_EXECUTABLE(MiniBuffer.PNG.App PNG/App.cpp)
 TARGET_INCLUDE_DIRECTORIES(MiniBuffer.PNG.App PRIVATE ${MINI_BF_SOURCE_DIR}/src)
 TARGET_INCLUDE_DIRECTORIES(MiniBuffer.PNG.App PRIVATE ${MINI_BF_SOURCE_DIR}/src/ios)
-TARGET_LINK_LIBRARIES(MiniBuffer.PNG.App PRIVATE Spng::Framework)
+TARGET_LINK_LIBRARIES(MiniBuffer.PNG.App PRIVATE minifb Spng::Framework)
 
 # Reference: https://www.py4u.net/discuss/2364298
 ADD_CUSTOM_COMMAND(TARGET MiniBuffer.PNG.App POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         $<TARGET_FILE_DIR:Spng::Framework>
+        $<TARGET_FILE_DIR:MiniBuffer.PNG.App>)
+
+
+ADD_CUSTOM_COMMAND(TARGET MiniBuffer.PNG.App POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        $<TARGET_FILE_DIR:minifb>
         $<TARGET_FILE_DIR:MiniBuffer.PNG.App>)
