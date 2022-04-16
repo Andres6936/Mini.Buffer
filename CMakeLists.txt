@@ -1,9 +1,6 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.7)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.14)
 
-SET(PROJECT_NAME MiniFB)
-PROJECT(${PROJECT_NAME})
-
-MESSAGE(STATUS "Processing " ${PROJECT_NAME})
+PROJECT(MiniFB LANGUAGES C CXX VERSION 2022.04.16)
 
 # Detect iOS
 #--------------------------------------
@@ -81,16 +78,6 @@ SET(SrcGL
         src/gl/MiniFB_GL.c
         )
 
-# Avoid RelWithDebInfo and MinSizeRel
-#--------------------------------------
-SET(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE)
-
-# Define Release by default
-#--------------------------------------
-IF (NOT CMAKE_BUILD_TYPE)
-    SET(CMAKE_BUILD_TYPE "Release")
-    MESSAGE(STATUS "Build type not specified: Use Release by default")
-ENDIF (NOT CMAKE_BUILD_TYPE)
 
 # Set features
 #--------------------------------------
@@ -298,87 +285,5 @@ ENDIF ()
 TARGET_INCLUDE_DIRECTORIES(minifb PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
 TARGET_INCLUDE_DIRECTORIES(minifb PRIVATE src)
 
-LINK_LIBRARIES(minifb)
-
-# Examples
-#--------------------------------------
-IF (MINIFB_BUILD_EXAMPLES)
-    IF (NOT IOS)
-
-        ADD_EXECUTABLE(noise
-                tests/noise.c
-                )
-
-        ADD_EXECUTABLE(input_events
-                tests/input_events.c
-                )
-
-        ADD_EXECUTABLE(input_events_cpp
-                tests/input_events_cpp.cpp
-                )
-
-        ADD_EXECUTABLE(multiple_windows
-                tests/multiple_windows.c
-                )
-
-        ADD_EXECUTABLE(hidpi
-                tests/hidpi.c
-                )
-
-    ELSE ()
-
-        ADD_EXECUTABLE(noise
-                tests/ios/main.m
-                tests/ios/AppDelegate.h
-                tests/ios/AppDelegate.m
-                )
-
-        SET(CMAKE_OSX_DEPLOYMENT_TARGET "11.0" CACHE STRING "Set CMake deployment target" ${FORCE_CACHE})
-
-        TARGET_INCLUDE_DIRECTORIES(noise PRIVATE src)
-        TARGET_INCLUDE_DIRECTORIES(noise PRIVATE src/ios)
-
-        ADD_DEFINITIONS(-DTVOS_DEPLOYMENT_TARGET=${CMAKE_OSX_DEPLOYMENT_TARGET})
-
-    ENDIF ()
-
-ENDIF ()
-
-# Organize IDE Folders
-#--------------------------------------
-SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
-SET_PROPERTY(TARGET minifb PROPERTY FOLDER "Libs")
-
-IF (MINIFB_BUILD_EXAMPLES)
-    SET_PROPERTY(TARGET noise PROPERTY FOLDER "Tests")
-    SET_PROPERTY(TARGET input_events PROPERTY FOLDER "Tests")
-    SET_PROPERTY(TARGET input_events_cpp PROPERTY FOLDER "Tests")
-    SET_PROPERTY(TARGET multiple_windows PROPERTY FOLDER "Tests")
-    SET_PROPERTY(TARGET hidpi PROPERTY FOLDER "Tests")
-ENDIF ()
-
-MESSAGE(STATUS "Done " ${PROJECT_NAME})
-
-
-# Content Pack Manager (Wrapper over FetchContent)
-INCLUDE(CMakeModules/CPM.cmake)
-
-# In this case, the name of the NAME variable is important.
-# because it will be used to determine the path where the
-# source code of the project is located.
-CPMADDPACKAGE(
-        NAME SPNG
-        GITHUB_REPOSITORY Andres6936/SPNG
-        VERSION 2021.2.26
-)
-
-ADD_EXECUTABLE(MiniBuffer.PNG.App tests/PNG/App.cpp)
-TARGET_INCLUDE_DIRECTORIES(MiniBuffer.PNG.App PRIVATE src)
-TARGET_INCLUDE_DIRECTORIES(MiniBuffer.PNG.App PRIVATE src/ios)
-TARGET_LINK_LIBRARIES(MiniBuffer.PNG.App PRIVATE Spng::Framework)
-
-# Reference: https://www.py4u.net/discuss/2364298
-ADD_CUSTOM_COMMAND(TARGET MiniBuffer.PNG.App POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${SPNG_BINARY_DIR}
-        $<TARGET_FILE_DIR:MiniBuffer.PNG.App>)
+# Build binaries for Examples if the options is enable
+ADD_SUBDIRECTORY(tests/)
