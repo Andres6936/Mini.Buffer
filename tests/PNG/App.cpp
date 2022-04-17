@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 
-class Decoder : std::vector <unsigned char>
+class Decoder : private std::vector <unsigned char>
 {
 
 private:
