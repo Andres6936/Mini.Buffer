@@ -12,7 +12,7 @@ class Decoder
 private:
 
 	spng_ctx* ctx = nullptr;
-	unsigned char* image = nullptr;
+	std::vector <unsigned char> image;
 
 public:
 
@@ -90,7 +90,7 @@ public:
 		{ printf("palette entries: %u\n", plte.n_entries); }
 
 
-		size_t image_size, image_width;
+		size_t image_size;
 
 		/* Output format, does not depend on source PNG format except for
 		   SPNG_FMT_PNG, which is the PNG's format in host-endian or
@@ -108,62 +108,24 @@ public:
 		if (ret)
 		{ return; }
 
-		image = static_cast<unsigned char*>(std::malloc(image_size));
+		image.resize(image_size);
 
-		if (image == nullptr)
+		if (image.size() != image_size)
 		{ return; }
 
-		/* Decode the image in one go */
-		/* ret = spng_decode_image(ctx, image, image_size, SPNG_FMT_RGBA8, 0);
-		if(ret)
-		{
-			printf("spng_decode_image() error: %s\n", spng_strerror(ret));
-			goto error;
-		}*/
-
-		/* Alternatively you can decode the image progressively,
-		   this requires an initialization step. */
-		ret = spng_decode_image(ctx, nullptr, 0, fmt, SPNG_DECODE_PROGRESSIVE);
+		// Decode the image in one go
+		ret = spng_decode_image(ctx, image.data(), image_size, SPNG_FMT_RGBA8, 0);
 
 		if (ret)
 		{
-			printf("progressive spng_decode_image() error: %s\n", spng_strerror(ret));
+			printf("spng_decode_image() error: %s\n", spng_strerror(ret));
 			return;
-		}
-
-		/* ihdr.height will always be non-zero if spng_get_ihdr() succeeds */
-		image_width = image_size / ihdr.height;
-
-		struct spng_row_info row_info = { 0 };
-
-		do
-		{
-			ret = spng_get_row_info(ctx, &row_info);
-			if (ret)
-			{ break; }
-
-			ret = spng_decode_row(ctx, image + row_info.row_num * image_width, image_width);
-		} while (!ret);
-
-		if (ret != SPNG_EOI)
-		{
-			printf("progressive decode error: %s\n", spng_strerror(ret));
-
-			if (ihdr.interlace_method)
-			{
-				printf("last pass: %d, scanline: %u\n", row_info.pass, row_info.scanline_idx);
-			}
-			else
-			{
-				printf("last row: %u\n", row_info.row_num);
-			}
 		}
 	}
 
 	~Decoder()
 	{
 		spng_ctx_free(ctx);
-		std::free(image);
 	}
 
 	static const char* color_type_str(enum spng_color_type color_type)
