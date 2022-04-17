@@ -31,7 +31,7 @@ private:
 	/* Creating an encoder context requires a flag */
 	spng_ctx* enc = spng_ctx_new(SPNG_CTX_ENCODER);
 
-	bool isNoText = false;
+	bool hasChunkText = true;
 
 public:
 
@@ -211,103 +211,103 @@ public:
 		if (ret == SPNG_ECHUNKAVAIL)
 		{
 			ret = 0;
-			isNoText = true; /* no text chunks found in file */
-			throw std::exception("Error");
+			hasChunkText = false; /* no text chunks found in file */
 		}
 
 		if (ret)
 		{
 			printf("spng_get_text() error: %s\n", spng_strerror(ret));
-			throw std::exception("error");
+			throw std::exception("Not text found in file");
 		}
 
-		text = static_cast<spng_text*>(malloc(n_text * sizeof(spng_text)));
 
-		if (text == NULL)
-		{ throw std::exception("error"); }
-
-		ret = spng_get_text(ctx, text, &n_text);
-
-		if (ret)
+		if (hasChunkText)
 		{
-			printf("spng_get_text() error: %s\n", spng_strerror(ret));
-			isNoText = true;
-			throw std::exception("Error");
-		}
+			text = static_cast<spng_text*>(malloc(n_text * sizeof(spng_text)));
 
-		uint32_t i;
-		for (i = 0; i < n_text; i++)
-		{
-			char* type_str = "tEXt";
-			if (text[i].type == SPNG_ITXT)
-			{ type_str = "iTXt"; }
-			else if (text[i].type == SPNG_ZTXT)
-			{ type_str = "zTXt"; }
+			if (text == NULL)
+			{ throw std::exception("error"); }
 
-			printf("\ntext type: %s\n", type_str);
-			printf("keyword: %s\n", text[i].keyword);
-
-			if (text[i].type == SPNG_ITXT)
-			{
-				printf("language tag: %s\n", text[i].language_tag);
-				printf("translated keyword: %s\n", text[i].translated_keyword);
-			}
-
-			printf("text is %scompressed\n", text[i].compression_flag ? "" : "not ");
-			printf("text length: %lu\n", (unsigned long int)text[i].length);
-			printf("text: %s\n", text[i].text);
-		}
-
-		if (isNoText)
-		{
-			free(text);
-
-			/* The encoder supports all PNG formats but format conversion support is limited */
-			if (fmt != SPNG_FMT_PNG)
-			{ throw std::exception("skip encode"); }
-
-			/* This example reencodes the decoded image */
-
-
-
-			/* Encode to internal buffer managed by the library */
-			spng_set_option(enc, SPNG_ENCODE_TO_BUFFER, 1);
-
-			/* Alternatively you can set an output FILE* or stream with spng_set_png_file() or spng_set_png_stream() */
-
-			/* In this case we're reencoding to the same PNG format */
-			spng_set_ihdr(enc, &ihdr);
-
-			/* Copy the palette from the source file */
-			if (plte.n_entries > 0)
-			{ spng_set_plte(enc, &plte); }
-
-			/* SPNG_FMT_PNG is a special value that matches the format in ihdr */
-			fmt = SPNG_FMT_PNG;
-
-			/* SPNG_ENCODE_FINALIZE will finalize the PNG with the end-of-file marker */
-			ret = spng_encode_image(enc, out.data(), out_size, fmt, SPNG_ENCODE_FINALIZE);
+			ret = spng_get_text(ctx, text, &n_text);
 
 			if (ret)
 			{
-				printf("spng_encode_image() error: %s\n", spng_strerror(ret));
-				throw std::exception("encode error");
+				printf("spng_get_text() error: %s\n", spng_strerror(ret));
+				hasChunkText = true;
+				throw std::exception("Error");
 			}
 
-			size_t png_size;
-			void* png_buf = NULL;
-
-			/* Get the internal buffer of the finished PNG */
-			png_buf = spng_get_png_buffer(enc, &png_size, &ret);
-
-			if (png_buf == NULL)
+			uint32_t i;
+			for (i = 0; i < n_text; i++)
 			{
-				printf("spng_get_png_buffer() error: %s\n", spng_strerror(ret));
+				char* type_str = "tEXt";
+				if (text[i].type == SPNG_ITXT)
+				{ type_str = "iTXt"; }
+				else if (text[i].type == SPNG_ZTXT)
+				{ type_str = "zTXt"; }
+
+				printf("\ntext type: %s\n", type_str);
+				printf("keyword: %s\n", text[i].keyword);
+
+				if (text[i].type == SPNG_ITXT)
+				{
+					printf("language tag: %s\n", text[i].language_tag);
+					printf("translated keyword: %s\n", text[i].translated_keyword);
+				}
+
+				printf("text is %scompressed\n", text[i].compression_flag ? "" : "not ");
+				printf("text length: %lu\n", (unsigned long int)text[i].length);
+				printf("text: %s\n", text[i].text);
 			}
 
-			/* User owns the buffer after a successful call */
-			free(png_buf);
+			free(text);
 		}
+
+		/* The encoder supports all PNG formats but format conversion support is limited */
+		if (fmt != SPNG_FMT_PNG)
+		{ throw std::exception("skip encode"); }
+
+		/* This example reencodes the decoded image */
+
+
+
+		/* Encode to internal buffer managed by the library */
+		spng_set_option(enc, SPNG_ENCODE_TO_BUFFER, 1);
+
+		/* Alternatively you can set an output FILE* or stream with spng_set_png_file() or spng_set_png_stream() */
+
+		/* In this case we're reencoding to the same PNG format */
+		spng_set_ihdr(enc, &ihdr);
+
+		/* Copy the palette from the source file */
+		if (plte.n_entries > 0)
+		{ spng_set_plte(enc, &plte); }
+
+		/* SPNG_FMT_PNG is a special value that matches the format in ihdr */
+		fmt = SPNG_FMT_PNG;
+
+		/* SPNG_ENCODE_FINALIZE will finalize the PNG with the end-of-file marker */
+		ret = spng_encode_image(enc, out.data(), out_size, fmt, SPNG_ENCODE_FINALIZE);
+
+		if (ret)
+		{
+			printf("spng_encode_image() error: %s\n", spng_strerror(ret));
+			throw std::exception("encode error");
+		}
+
+		size_t png_size;
+		void* png_buf = NULL;
+
+		/* Get the internal buffer of the finished PNG */
+		png_buf = spng_get_png_buffer(enc, &png_size, &ret);
+
+		if (png_buf == NULL)
+		{
+			printf("spng_get_png_buffer() error: %s\n", spng_strerror(ret));
+		}
+
+		/* User owns the buffer after a successful call */
+		free(png_buf);
 
 		return ret;
 	}
