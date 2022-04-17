@@ -33,6 +33,6 @@ ENDIF ()
 
 
 # Build the libraries and binaries for the main project
-ADD_SUBDIRECTORY(src/)
+ADD_SUBDIRECTORY(Source/)
 # Build binaries for Examples if the options is enable
-ADD_SUBDIRECTORY(tests/)
+ADD_SUBDIRECTORY(Tests/)
