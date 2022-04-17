@@ -1,25 +1,23 @@
 #include <SPNG/spng.h>
 #include <MiniFB.h>
 
-#include <cinttypes>
 #include <cstdio>
 #include <iostream>
 #include <vector>
 
-class Decoder
+class Decoder : std::vector <unsigned char>
 {
 
 private:
 
 	spng_ctx* ctx = nullptr;
-	std::vector <unsigned char> image;
 
 public:
 
 	Decoder(int argc, char** argv)
 	{
 		FILE* png;
-		int ret = 0;
+		int ret;
 
 
 		if (argc < 2)
@@ -92,29 +90,18 @@ public:
 
 		size_t image_size;
 
-		/* Output format, does not depend on source PNG format except for
-		   SPNG_FMT_PNG, which is the PNG's format in host-endian or
-		   big-endian for SPNG_FMT_RAW.
-		   Note that for these two formats <8-bit images are left byte-packed */
-		int fmt = SPNG_FMT_PNG;
-
-		/* With SPNG_FMT_PNG indexed color images are output as palette indices,
-		   pick another format to expand them. */
-		if (ihdr.color_type == SPNG_COLOR_TYPE_INDEXED)
-		{ fmt = SPNG_FMT_RGB8; }
-
-		ret = spng_decoded_image_size(ctx, fmt, &image_size);
+		ret = spng_decoded_image_size(ctx, SPNG_FMT_RGBA8, &image_size);
 
 		if (ret)
 		{ return; }
 
-		image.resize(image_size);
+		this->resize(image_size);
 
-		if (image.size() != image_size)
+		if (this->size() != image_size)
 		{ return; }
 
 		// Decode the image in one go
-		ret = spng_decode_image(ctx, image.data(), image_size, SPNG_FMT_RGBA8, 0);
+		ret = spng_decode_image(ctx, this->data(), image_size, SPNG_FMT_RGBA8, 0);
 
 		if (ret)
 		{
@@ -126,6 +113,16 @@ public:
 	~Decoder()
 	{
 		spng_ctx_free(ctx);
+	}
+
+	std::uint8_t pixelAt(std::size_t index) const noexcept
+	{
+		return this->operator[](index);
+	}
+
+	std::size_t getSize() const noexcept
+	{
+		return this->size();
 	}
 
 	static const char* color_type_str(enum spng_color_type color_type)
@@ -180,6 +177,14 @@ public:
 		}
 
 		Decoder decoder{ argc, argv };
+
+		for (int i = 0; i < decoder.getSize(); i += 4)
+		{
+			buffer[i] = decoder.pixelAt(i);
+			buffer[i + 1] = decoder.pixelAt(i + 1);
+			buffer[i + 2] = decoder.pixelAt(i + 2);
+			buffer[i + 3] = decoder.pixelAt(i + 3);
+		}
 
 		do
 		{
