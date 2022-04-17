@@ -21,6 +21,7 @@ public:
 	{
 		window = mfb_open_ex("my display", 800, 600, WF_RESIZABLE);
 		buffer.resize(800 * 600 * 4);
+		std::fill(buffer.begin(), buffer.end(), 255);
 	}
 
 	~App()
@@ -46,6 +47,8 @@ public:
 			}
 
 
+			// Note that, by default, if ESC key is pressed mfb_update / mfb_update_ex
+			// will return -1 (and the window will have been destroyed internally).
 		} while (mfb_wait_sync(window) && isRunning);
 
 		return 0;
