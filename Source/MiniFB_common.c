@@ -1,6 +1,6 @@
-#include <MiniFB.h>
-#include "WindowData.h"
-#include "MiniFB_internal.h"
+#include <MiniBF/MiniFB.h>
+#include "MiniBF/Internal/WindowData.h"
+#include "MiniBF/Internal/MiniFB_internal.h"
 
 //-------------------------------------
 short int g_keycodes[512] = { 0 };

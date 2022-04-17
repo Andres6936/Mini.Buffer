@@ -20,17 +20,17 @@ ADD_LIBRARY(native_app_glue STATIC
         )
 
 ADD_LIBRARY(minifb STATIC
-        ${CMAKE_CURRENT_LIST_DIR}/../../../../../../include/MiniFB.h
-        ${CMAKE_CURRENT_LIST_DIR}/../../../../../../include/MiniFB_cpp.h
-        ${CMAKE_CURRENT_LIST_DIR}/../../../../../../include/MiniFB_enums.h
+        ../../../../../../Include/MiniBF/MiniFB.h
+        ../../../../../../Include/MiniBF/MiniFB_cpp.h
+        ../../../../../../Include/MiniBF/MiniFB_enums.h
 
         ${CMAKE_CURRENT_LIST_DIR}/../../../../../../Source/MiniFB_common.c
         ${CMAKE_CURRENT_LIST_DIR}/../../../../../../Source/MiniFB_cpp.cpp
         ${CMAKE_CURRENT_LIST_DIR}/../../../../../../Source/MiniFB_internal.c
-        ${CMAKE_CURRENT_LIST_DIR}/../../../../../../Source/MiniFB_internal.h
+        ../../../../../../Include/MiniBF/Internal/MiniFB_internal.h
         ${CMAKE_CURRENT_LIST_DIR}/../../../../../../Source/MiniFB_timer.c
         ${CMAKE_CURRENT_LIST_DIR}/../../../../../../Source/MiniFB_linux.c
-        ${CMAKE_CURRENT_LIST_DIR}/../../../../../../Source/WindowData.h
+        ../../../../../../Include/MiniBF/Internal/WindowData.h
 
         ${CMAKE_CURRENT_LIST_DIR}/../../../../../../Source/android/AndroidMiniFB.c
         ${CMAKE_CURRENT_LIST_DIR}/../../../../../../Source/android/WindowData_Android.h

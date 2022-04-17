@@ -1,5 +1,5 @@
 #include <SPNG/spng.h>
-#include <MiniFB.h>
+#include <MiniBF/MiniFB.h>
 
 #include <cstdio>
 #include <iostream>

@@ -1,5 +1,5 @@
-#include <MiniFB.h>
-#include "MiniFB_internal.h"
+#include <MiniBF/MiniFB.h>
+#include "MiniBF/Internal/MiniFB_internal.h"
 #include <stdlib.h>
 
 //-------------------------------------

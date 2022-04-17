@@ -1,4 +1,4 @@
-#include <MiniFB.h>
+#include <MiniBF/MiniFB.h>
 #include <MiniFB_internal.h>
 #include <WindowData.h>
 #include "WindowData_Win.h"

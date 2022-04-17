@@ -1,5 +1,5 @@
-#include <MiniFB_cpp.h>
-#include <MiniFB_enums.h>
+#include <MiniBF/MiniFB_cpp.h>
+#include <MiniBF/MiniFB_enums.h>
 #include <vector>
 
 //-------------------------------------

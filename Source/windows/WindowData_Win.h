@@ -1,6 +1,6 @@
 #pragma once
 
-#include <MiniFB_enums.h>
+#include <MiniBF/MiniFB_enums.h>
 //#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 

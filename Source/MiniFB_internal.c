@@ -1,4 +1,4 @@
-#include "MiniFB_internal.h"
+#include "MiniBF/Internal/MiniFB_internal.h"
 #include <stdint.h>
 
 //#define kUseBilinearInterpolation
