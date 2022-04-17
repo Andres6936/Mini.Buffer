@@ -2,7 +2,7 @@
 #include "MiniFB_internal.h"
 #include "MiniFB_enums.h"
 #include "WindowData.h"
-#include "WindowData_Way.h"
+#include "MiniBF/Internal/Wayland/WindowData_Way.h"
 
 #include <wayland-client.h>
 #include <wayland-cursor.h>

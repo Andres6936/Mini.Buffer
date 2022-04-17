@@ -9,10 +9,10 @@
 #include <sched.h>
 #include <mach/mach_time.h>
 
-#include "OSXWindow.h"
-#include "OSXView.h"
-#include "OSXViewDelegate.h"
-#include "WindowData_OSX.h"
+#include "../../Include/MiniBF/Internal/Macosx/OSXWindow.h"
+#include "../../Include/MiniBF/Internal/Macosx/OSXView.h"
+#include "../../Include/MiniBF/Internal/Macosx/OSXViewDelegate.h"
+#include "../../Include/MiniBF/Internal/Macosx/WindowData_OSX.h"
 #include <MiniFB.h>
 #include <MiniFB_internal.h>
 #include <MiniFB_enums.h>

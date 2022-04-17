@@ -9,8 +9,8 @@
 #import <simd/simd.h>
 #import <ModelIO/ModelIO.h>
 
-#import "iOSViewDelegate.h"
-#include "WindowData_IOS.h"
+#import "../../Include/MiniBF/Internal/iOS/iOSViewDelegate.h"
+#include "../../Include/MiniBF/Internal/iOS/WindowData_IOS.h"
 #include <MiniFB.h>
 #include <MiniFB_ios.h>
 #include <MiniFB_internal.h>

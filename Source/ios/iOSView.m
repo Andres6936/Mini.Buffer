@@ -1,4 +1,4 @@
-#include "iOSView.h"
+#include "../../Include/MiniBF/Internal/iOS/iOSView.h"
 #include <MiniFB_internal.h>
 
 //-------------------------------------

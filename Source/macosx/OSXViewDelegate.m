@@ -1,4 +1,4 @@
-#include "OSXViewDelegate.h"
+#include "../../Include/MiniBF/Internal/Macosx/OSXViewDelegate.h"
 
 #if defined(USE_METAL_API)
 

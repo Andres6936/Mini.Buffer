@@ -2,9 +2,9 @@
 #import <UIKit/UIKit.h>
 #include <mach/mach_time.h>
 
-#include "iOSViewController.h"
-#include "iOSViewDelegate.h"
-#include "WindowData_IOS.h"
+#include "../../Include/MiniBF/Internal/iOS/iOSViewController.h"
+#include "../../Include/MiniBF/Internal/iOS/iOSViewDelegate.h"
+#include "../../Include/MiniBF/Internal/iOS/WindowData_IOS.h"
 #include <MiniFB.h>
 #include <MiniFB_internal.h>
 #include <WindowData.h>

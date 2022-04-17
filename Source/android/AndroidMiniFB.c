@@ -8,7 +8,7 @@
 //--
 #include <MiniFB.h>
 #include <WindowData.h>
-#include "WindowData_Android.h"
+#include "MiniBF/Internal/Android/WindowData_Android.h"
 
 #define  LOG_TAG    "MiniFB"
 #define  LOGV(...)  __android_log_print(ANDROID_LOG_VERBOSE, LOG_TAG, __VA_ARGS__)

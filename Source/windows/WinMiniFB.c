@@ -1,7 +1,7 @@
 #include <MiniBF/MiniFB.h>
 #include <MiniFB_internal.h>
 #include <WindowData.h>
-#include "WindowData_Win.h"
+#include "MiniBF/Internal/Windows/WindowData_Win.h"
 
 #if defined(USE_OPENGL_API)
 

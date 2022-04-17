@@ -8,10 +8,10 @@
 
 #import <Metal/Metal.h>
 #import <MetalKit/MetalKit.h>
-#import "iOSViewController.h"
-#import "iOSViewDelegate.h"
-#import "iOSView.h"
-#include "WindowData_IOS.h"
+#import "../../Include/MiniBF/Internal/iOS/iOSViewController.h"
+#import "../../Include/MiniBF/Internal/iOS/iOSViewDelegate.h"
+#import "../../Include/MiniBF/Internal/iOS/iOSView.h"
+#include "../../Include/MiniBF/Internal/iOS/WindowData_IOS.h"
 
 //-------------------------------------
 @implementation iOSViewController

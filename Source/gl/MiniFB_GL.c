@@ -1,7 +1,7 @@
 #if defined(USE_OPENGL_API)
 
-#include "MiniFB_GL.h"
-#include "MiniFB_internal.h"
+#include "MiniBF/Internal/OpenGL/MiniFB_GL.h"
+#include "MiniBF/Internal/MiniFB_internal.h"
 
 #if defined(_WIN32) || defined(WIN32)
 

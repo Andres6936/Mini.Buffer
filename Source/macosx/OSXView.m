@@ -1,6 +1,6 @@
-#import "OSXView.h"
-#import "OSXWindow.h"
-#import "WindowData_OSX.h"
+#import "../../Include/MiniBF/Internal/Macosx/OSXView.h"
+#import "../../Include/MiniBF/Internal/Macosx/OSXWindow.h"
+#import "../../Include/MiniBF/Internal/Macosx/WindowData_OSX.h"
 #include <MiniFB_internal.h>
 
 //-------------------------------------

@@ -33,7 +33,7 @@ ADD_LIBRARY(minifb STATIC
         ../../../../../../Include/MiniBF/Internal/WindowData.h
 
         ${CMAKE_CURRENT_LIST_DIR}/../../../../../../Source/android/AndroidMiniFB.c
-        ${CMAKE_CURRENT_LIST_DIR}/../../../../../../Source/android/WindowData_Android.h
+        ../../../../../../Include/MiniBF/Internal/Android/WindowData_Android.h
         )
 
 TARGET_INCLUDE_DIRECTORIES(minifb PRIVATE
