@@ -15,8 +15,8 @@ private:
 	FILE* png;
 	spng_ihdr ihdr;
 	spng_plte plte = { 0 };
-	spng_text* text = NULL;
-	spng_ctx* ctx = NULL;
+	spng_text* text = nullptr;
+	spng_ctx* ctx = nullptr;
 	size_t out_size, out_width;
 	mfb_window* window;
 
@@ -97,7 +97,7 @@ public:
 
 		png = fopen(argv[1], "rb");
 
-		if (png == NULL)
+		if (png == nullptr)
 		{
 			printf("error opening input file %s\n", argv[1]);
 			throw std::exception("error");
@@ -158,7 +158,7 @@ public:
 		out.resize(out_size);
 
 		/* This is required to initialize for progressive decoding */
-		ret = spng_decode_image(ctx, NULL, 0, fmt, SPNG_DECODE_PROGRESSIVE);
+		ret = spng_decode_image(ctx, nullptr, 0, fmt, SPNG_DECODE_PROGRESSIVE);
 
 		if (ret)
 		{
@@ -206,7 +206,7 @@ public:
 
 		uint32_t n_text;
 
-		ret = spng_get_text(ctx, NULL, &n_text);
+		ret = spng_get_text(ctx, nullptr, &n_text);
 
 		if (ret == SPNG_ECHUNKAVAIL)
 		{
@@ -225,7 +225,7 @@ public:
 		{
 			text = static_cast<spng_text*>(malloc(n_text * sizeof(spng_text)));
 
-			if (text == NULL)
+			if (text == nullptr)
 			{ throw std::exception("error"); }
 
 			ret = spng_get_text(ctx, text, &n_text);
