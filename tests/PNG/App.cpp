@@ -158,8 +158,8 @@ public:
 
 	App()
 	{
-		window = mfb_open_ex("my display", 800, 600, WF_RESIZABLE);
-		buffer.resize(800 * 600 * 4);
+		window = mfb_open_ex("my display", 221, 85, WF_RESIZABLE);
+		buffer.resize(221 * 85 * 4);
 		std::fill(buffer.begin(), buffer.end(), 255);
 	}
 
@@ -188,7 +188,7 @@ public:
 
 		do
 		{
-			int state = mfb_update_ex(window, buffer.data(), 800, 600);
+			int state = mfb_update_ex(window, buffer.data(), 221, 85);
 
 			if (state < 0)
 			{
