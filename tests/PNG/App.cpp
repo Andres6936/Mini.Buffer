@@ -1,4 +1,4 @@
-#include <spng.h>
+#include <SPNG/spng.h>
 #include <MiniFB.h>
 
 #include <cinttypes>

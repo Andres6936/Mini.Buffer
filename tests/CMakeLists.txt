@@ -50,7 +50,7 @@ INCLUDE(../CMakeModules/CPM.cmake)
 CPMADDPACKAGE(
         NAME SPNG
         GITHUB_REPOSITORY Andres6936/SPNG
-        VERSION 2021.2.26
+        VERSION 2021.4.16
 )
 
 ADD_EXECUTABLE(MiniBuffer.PNG.App PNG/App.cpp)
