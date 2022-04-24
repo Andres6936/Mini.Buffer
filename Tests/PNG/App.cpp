@@ -235,7 +235,7 @@ public:
 
 		do
 		{
-			int state = mfb_update_ex(window, buffer.data(), 221, 85);
+			int state = mfb_update_ex(window, buffer.data(), decoder.getWidth(), decoder.getHeight());
 
 			if (state < 0)
 			{
