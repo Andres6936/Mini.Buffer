@@ -188,16 +188,27 @@ class App
 
 private:
 
+	/**
+	 * The number of arguments passed to program.
+	 */
+	const int argc;
+
+	/**
+	 * Determine if the program is running, if it variable is false the program finish.
+	 */
 	bool isRunning = true;
+
+	Decoder decoder;
+
 	mfb_window* window{ nullptr };
 	std::vector <unsigned char> buffer;
 
 public:
 
-	App()
+	App(int argc, char** argv) : argc(argc), decoder(argc, argv)
 	{
-		window = mfb_open_ex("my display", 221, 85, WF_RESIZABLE);
-		buffer.resize(221 * 85 * 4);
+		window = mfb_open_ex("my display", decoder.getWidth(), decoder.getHeight(), WF_RESIZABLE);
+		buffer.resize(decoder.getWidth() * decoder.getHeight() * 4);
 		std::fill(buffer.begin(), buffer.end(), 255);
 	}
 
@@ -207,14 +218,12 @@ public:
 	}
 
 
-	int run(int argc, char** argv)
+	int run()
 	{
 		if (argc < 2)
 		{
 			throw std::exception("No Input File for Read");
 		}
-
-		Decoder decoder{ argc, argv };
 
 		for (int i = 0; i < decoder.getSize(); i += 4)
 		{
@@ -247,7 +256,7 @@ int main(int argc, char** argv)
 {
 	try
 	{
-		return App().run(argc, argv);
+		return App(argc, argv).run();
 	}
 	catch (std::exception& exception)
 	{
