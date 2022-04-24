@@ -9,39 +9,39 @@ SET(SrcLib
 
 #--
 SET(SrcWindows
-        windows/WinMiniFB.c
+        Windows/WinMiniFB.c
         )
 
 #--
 SET(SrcMacOSX
-        macosx/MacMiniFB.m
-        macosx/OSXWindow.m
-        macosx/OSXView.m
-        macosx/OSXViewDelegate.m
+        Macosx/MacMiniFB.m
+        Macosx/OSXWindow.m
+        Macosx/OSXView.m
+        Macosx/OSXViewDelegate.m
         )
 
 #--
 SET(SrcIOS
-        ios/iOSMiniFB.m
-        ios/iOSView.m
-        ios/iOSViewController.m
-        ios/iOSViewDelegate.m
+        iOS/iOSMiniFB.m
+        iOS/iOSView.m
+        iOS/iOSViewController.m
+        iOS/iOSViewDelegate.m
         )
 
 #--
 SET(SrcWayland
-        wayland/WaylandMiniFB.c
+        Wayland/WaylandMiniFB.c
         MiniFB_linux.c
         )
 
 #--
 SET(SrcX11
-        x11/X11MiniFB.c
+        X11/X11MiniFB.c
         MiniFB_linux.c
         )
 
 SET(SrcGL
-        gl/MiniFB_GL.c
+        OpenGL/MiniFB_GL.c
         )
 
 
@@ -105,7 +105,7 @@ IF (WIN32)
 
     LIST(APPEND SrcLib ${SrcWindows})
 
-ELSEIF (IOS)
+ELSEIF (iOS)
 
     LIST(APPEND SrcLib ${SrcIOS})
 
@@ -146,7 +146,7 @@ ADD_LIBRARY(minifb STATIC
 #--------------------------------------
 IF (APPLE)
 
-    IF (IOS)
+    IF (iOS)
         TARGET_LINK_LIBRARIES(minifb
                 "-framework UIKit"
                 "-framework QuartzCore"

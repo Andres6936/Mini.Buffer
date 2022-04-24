@@ -230,7 +230,7 @@ main()
 			break;
 		}
 
-		// Don't need to do this for both windows in the same thread
+		// Don't need to do this for both Windows in the same thread
 		if (window_a != 0x0)
 		{
 			if (mfb_wait_sync(window_a) == false)

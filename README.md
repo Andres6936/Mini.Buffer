@@ -484,7 +484,7 @@ If you use **tundra**:
 To build the code run:
 
 ```bash
-tundra2 x11-gcc-debug
+tundra2 X11-gcc-debug
 ```
 
 and you should be able to run t2-output/x11-gcc-debug-default/noise

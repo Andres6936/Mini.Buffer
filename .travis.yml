@@ -33,7 +33,7 @@ jobs:
       env:
         - USE_IOS=ON
 
-    - os: windows
+    - os: Windows
       name: "Windows Visual Studio"
       env:
         - USE_WINDOWS=ON

@@ -27,7 +27,7 @@ create_window_data(unsigned width, unsigned height)
 	if (window_data_ios == 0x0)
 	{
 		free(window_data);
-		NSLog(@"Cannot allocate ios window data");
+		NSLog(@"Cannot allocate iOS window data");
 		return 0x0;
 	}
 	memset((void*)window_data_ios, 0, sizeof(SWindowData_IOS));

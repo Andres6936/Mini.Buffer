@@ -5,12 +5,12 @@
 
 #if defined(_WIN32) || defined(WIN32)
 
-#include <windows/WindowData_Win.h>
+#include <MiniBF/Internal/Windows/WindowData_Win.h>
 #include <gl/gl.h>
 
 #elif defined(linux)
 #include <x11/WindowData_X11.h>
-#include <GL/gl.h>
+#include <GL/OpenGL.h>
 #include <GL/glx.h>
 #endif
 
@@ -199,11 +199,11 @@ destroy_GL_context(SWindowData* window_data)
 #undef RGB
 #endif
 
-#define TEXTURE0    0x84C0  // [ Core in gl 1.3, gles1 1.0, gles2 2.0, glsc2 2.0, Provided by GL_ARB_multitexture (gl) ]
-#define RGB         0x1907  // [ Core in gl 1.0, gles1 1.0, gles2 2.0, glsc2 2.0 ]
-#define RGBA        0x1908  // [ Core in gl 1.0, gles1 1.0, gles2 2.0, glsc2 2.0 ]
-#define BGR         0x80E0  // [ Core in gl 1.2 ]
-#define BGRA        0x80E1  // [ Core in gl 1.2, Provided by GL_ARB_vertex_array_bgra (gl|glcore) ]
+#define TEXTURE0    0x84C0  // [ Core in OpenGL 1.3, gles1 1.0, gles2 2.0, glsc2 2.0, Provided by GL_ARB_multitexture (OpenGL) ]
+#define RGB         0x1907  // [ Core in OpenGL 1.0, gles1 1.0, gles2 2.0, glsc2 2.0 ]
+#define RGBA        0x1908  // [ Core in OpenGL 1.0, gles1 1.0, gles2 2.0, glsc2 2.0 ]
+#define BGR         0x80E0  // [ Core in OpenGL 1.2 ]
+#define BGRA        0x80E1  // [ Core in OpenGL 1.2, Provided by GL_ARB_vertex_array_bgra (OpenGL|glcore) ]
 
 //-------------------------------------
 void

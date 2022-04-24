@@ -1,7 +1,7 @@
 #pragma once
 
 #include <MiniBF/MiniFB.h>
-#include "WindowData.h"
+#include "MiniBF/Internal/WindowData.h"
 
 #define kCall(func, ...)    if(window_data && window_data->func) window_data->func((struct mfb_window *) window_data, __VA_ARGS__);
 #define kUnused(var)        (void) var;

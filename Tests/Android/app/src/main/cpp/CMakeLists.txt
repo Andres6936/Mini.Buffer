@@ -32,7 +32,7 @@ ADD_LIBRARY(minifb STATIC
         ${CMAKE_CURRENT_LIST_DIR}/../../../../../../Source/MiniFB_linux.c
         ../../../../../../Include/MiniBF/Internal/WindowData.h
 
-        ${CMAKE_CURRENT_LIST_DIR}/../../../../../../Source/android/AndroidMiniFB.c
+        ${CMAKE_CURRENT_LIST_DIR}/../../../../../../Source/Android/AndroidMiniFB.c
         ../../../../../../Include/MiniBF/Internal/Android/WindowData_Android.h
         )
 

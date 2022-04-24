@@ -2,7 +2,7 @@
 
 #if defined(USE_OPENGL_API)
 
-#include <WindowData.h>
+#include <MiniBF/Internal/WindowData.h>
 
 bool create_GL_context(SWindowData* window_data);
 

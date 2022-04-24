@@ -1,5 +1,5 @@
 IF (MINIFB_BUILD_EXAMPLES)
-    IF (NOT IOS)
+    IF (NOT iOS)
 
         ADD_EXECUTABLE(noise
                 noise.c
@@ -24,15 +24,15 @@ IF (MINIFB_BUILD_EXAMPLES)
     ELSE ()
 
         ADD_EXECUTABLE(noise
-                ios/main.m
-                ios/AppDelegate.h
-                ios/AppDelegate.m
+                iOS/main.m
+                iOS/AppDelegate.h
+                iOS/AppDelegate.m
                 )
 
         SET(CMAKE_OSX_DEPLOYMENT_TARGET "11.0" CACHE STRING "Set CMake deployment target" ${FORCE_CACHE})
 
         TARGET_INCLUDE_DIRECTORIES(noise PRIVATE ${MINI_BF_SOURCE_DIR}/Source)
-        TARGET_INCLUDE_DIRECTORIES(noise PRIVATE ${MINI_BF_SOURCE_DIR}/Source/ios)
+        TARGET_INCLUDE_DIRECTORIES(noise PRIVATE ${MINI_BF_SOURCE_DIR}/Source/iOS)
 
         ADD_DEFINITIONS(-DTVOS_DEPLOYMENT_TARGET=${CMAKE_OSX_DEPLOYMENT_TARGET})
 
@@ -55,7 +55,7 @@ CPMADDPACKAGE(
 
 ADD_EXECUTABLE(MiniBuffer.PNG.App PNG/App.cpp)
 TARGET_INCLUDE_DIRECTORIES(MiniBuffer.PNG.App PRIVATE ${MINI_BF_SOURCE_DIR}/Source)
-TARGET_INCLUDE_DIRECTORIES(MiniBuffer.PNG.App PRIVATE ${MINI_BF_SOURCE_DIR}/Source/ios)
+TARGET_INCLUDE_DIRECTORIES(MiniBuffer.PNG.App PRIVATE ${MINI_BF_SOURCE_DIR}/Source/iOS)
 TARGET_LINK_LIBRARIES(MiniBuffer.PNG.App PRIVATE minifb Spng::Framework)
 
 # Reference: https://www.py4u.net/discuss/2364298

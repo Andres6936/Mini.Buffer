@@ -1,11 +1,11 @@
 #include <MiniBF/MiniFB.h>
-#include <MiniFB_internal.h>
-#include <WindowData.h>
+#include <MiniBF/Internal/MiniFB_internal.h>
+#include <MiniBF/Internal/WindowData.h>
 #include "MiniBF/Internal/Windows/WindowData_Win.h"
 
 #if defined(USE_OPENGL_API)
 
-#include "gl/MiniFB_GL.h"
+#include "MiniBF/Internal/OpenGL/MiniFB_GL.h"
 
 #endif
 
