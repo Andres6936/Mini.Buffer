@@ -10,6 +10,24 @@ class Decoder : private std::vector <unsigned char>
 
 private:
 
+	/**
+	 * The width of the image in pixels.
+	 */
+	std::uint32_t width;
+
+	/**
+	 * The height of image in pixels.
+	 */
+	std::uint32_t height;
+
+	/**
+	 * Represent the bit depth of image.
+	 */
+	std::uint8_t bitDepth;
+
+	/**
+	 * Context of library spng, used for get information of the image.
+	 */
 	spng_ctx* ctx = nullptr;
 
 public:
@@ -64,11 +82,16 @@ public:
 
 		const char* color_name = color_type_str(static_cast<spng_color_type>(ihdr.color_type));
 
+		// Set the dimension of image based the information of it.
+		width = ihdr.width;
+		height = ihdr.height;
+		bitDepth = ihdr.bit_depth;
+
 		printf("width: %u\n"
 			   "height: %u\n"
 			   "bit depth: %u\n"
 			   "color type: %u - %s\n",
-				ihdr.width, ihdr.height, ihdr.bit_depth, ihdr.color_type, color_name);
+				width, height, bitDepth, ihdr.color_type, color_name);
 
 		printf("compression method: %u\n"
 			   "filter method: %u\n"
@@ -113,6 +136,21 @@ public:
 	~Decoder()
 	{
 		spng_ctx_free(ctx);
+	}
+
+	std::uint32_t getWidth() const noexcept
+	{
+		return width;
+	}
+
+	std::uint32_t getHeight() const noexcept
+	{
+		return height;
+	}
+
+	std::uint8_t getBitDepth() const noexcept
+	{
+		return bitDepth;
 	}
 
 	std::uint8_t pixelAt(std::size_t index) const noexcept
