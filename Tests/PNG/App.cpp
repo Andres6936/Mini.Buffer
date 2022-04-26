@@ -148,11 +148,6 @@ public:
 		return height;
 	}
 
-	std::uint8_t getBitDepth() const noexcept
-	{
-		return bitDepth;
-	}
-
 	std::uint8_t pixelAt(std::size_t index) const noexcept
 	{
 		return this->operator[](index);
